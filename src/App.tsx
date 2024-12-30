@@ -1,14 +1,21 @@
-import AddTimer from "./components/AddTimer";
+import TimersContextProvider from "./store/Timer-context";
 
+import AddTimer from "./components/AddTimer";
+import TimerControler from "./components/TimerConroler";
+import TimerList from "./components/TimerList";
 function App() {
   function handleSave(data: unknown) {
     const extractedData = data as { title: string; price: string };
     console.log(extractedData);
   }
   return (
-    <div>
-      <AddTimer />
-    </div>
+    <TimersContextProvider>
+      <div>
+        <TimerControler></TimerControler>
+        <AddTimer />
+        <TimerList />
+      </div>
+    </TimersContextProvider>
   );
 }
 

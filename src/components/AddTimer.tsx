@@ -2,10 +2,14 @@ import Form from "./Form";
 import Buttton from "./Button";
 import Input from "./Input";
 
+import { useTimerContext } from "../store/Timer-context";
+
 function AddTimer() {
+  const { addTimers } = useTimerContext();
+
   function handleSave(data: unknown) {
     const extractedData = data as { name: string; duration: string };
-    console.log(extractedData);
+    addTimers({ name: extractedData.name, duration: +extractedData.duration });
   }
   return (
     <div>
