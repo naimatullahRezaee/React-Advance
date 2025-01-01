@@ -1,22 +1,47 @@
-import TimersContextProvider from "./store/Timer-context";
+import { useState, useEffect, type ReactNode } from "react";
+import { get } from "./util/http";
 
-import AddTimer from "./components/AddTimer";
-import TimerControler from "./components/TimerConroler";
-import TimerList from "./components/TimerList";
+import PostList from "./components/PostList";
+
+type Post = {
+  id: number;
+  title: string;
+  text: string;
+};
+
+type Data = {
+  id: number;
+  userId: number;
+  title: string;
+  body: string;
+};
 function App() {
-  function handleSave(data: unknown) {
-    const extractedData = data as { title: string; price: string };
-    console.log(extractedData);
+  const [fetchPosts, setFetchPosts] = useState<Post[]>();
+  useEffect(() => {
+    async function fetchData() {
+      const data = (await get(
+        "https://jsonplaceholder.typicode.com/posts"
+      )) as Data[];
+
+      const blogPosts: Post[] = data.map((item) => {
+        return {
+          id: item.id,
+          title: item.title,
+          text: item.body,
+        };
+      });
+      setFetchPosts(blogPosts);
+    }
+    fetchData();
+  }, []);
+
+  let content: ReactNode;
+
+  if (fetchPosts) {
+    content = <PostList posts={fetchPosts} />;
   }
-  return (
-    <TimersContextProvider>
-      <div className="">
-        <TimerControler></TimerControler>
-        <AddTimer />
-        <TimerList />
-      </div>
-    </TimersContextProvider>
-  );
+
+  return <div>{content}</div>;
 }
 
 export default App;
