@@ -10,7 +10,7 @@ function App() {
   }
   return (
     <TimersContextProvider>
-      <div>
+      <div className="">
         <TimerControler></TimerControler>
         <AddTimer />
         <TimerList />
